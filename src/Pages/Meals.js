@@ -2,9 +2,11 @@ import { useContext, useEffect, useState } from 'react';
 import RecipesContext from '../Context/RecipesContext';
 import RecipeCard from '../Components/RecipeCard';
 import { fetchMeals, fetchMealCategories } from '../Services/mealAPI';
+import { fetchDrinks } from '../Services/cocktailAPI';
 
 function Meals() {
-  const { meals, setMeals, loading, setLoading } = useContext(RecipesContext);
+  const { meals,
+    setMeals, drinks, setDrinks, loading, setLoading } = useContext(RecipesContext);
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('');
 
@@ -23,14 +25,26 @@ function Meals() {
       }
     };
 
+    const loadInitialDrinks = async () => {
+      if (drinks.length === 0) {
+        setLoading(true);
+
+        const data = await fetchDrinks();
+        setDrinks(data.drinks || []);
+
+        setLoading(false);
+      }
+    };
+
     const loadCategories = async () => {
       const data = await fetchMealCategories();
       setCategories(data.meals.slice(0, MAX_CATEGORIES));
     };
 
     loadInitialMeals();
+    loadInitialDrinks();
     loadCategories();
-  }, [meals.length, setMeals, setLoading]);
+  }, [meals.length, drinks.length, setMeals, setDrinks, setLoading]);
 
   const handleCategoryClick = async (categoryName) => {
     setLoading(true);

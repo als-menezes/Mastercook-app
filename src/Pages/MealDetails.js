@@ -1,10 +1,17 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import RecipesContext from '../Context/RecipesContext';
+import RecipeCard from '../Components/RecipeCard';
+import { fetchDrinks } from '../Services/cocktailAPI';
 
 function MealDetails() {
   const { id } = useParams();
+  const { drinks, setDrinks } = useContext(RecipesContext);
+
   const [recipe, setRecipe] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  const MAX_RECOMMENDATIONS = 6;
 
   useEffect(() => {
     const fetchRecipe = async () => {
@@ -23,12 +30,26 @@ function MealDetails() {
     fetchRecipe();
   }, [id]);
 
+  useEffect(() => {
+    const loadRecommendedDrinks = async () => {
+      if (drinks.length === 0) {
+        const data = await fetchDrinks();
+
+        setDrinks(data.drinks || []);
+      }
+    };
+
+    loadRecommendedDrinks();
+  }, [drinks.length, setDrinks]);
+
   if (loading) return <p>Loading...</p>;
   if (!recipe) return <p>Recipe not found</p>;
 
   const youtubeEmbedUrl = recipe.strYoutube
     ? recipe.strYoutube.replace('watch?v=', 'embed/')
     : '';
+
+  const recommendedDrinks = drinks.slice(0, MAX_RECOMMENDATIONS);
 
   return (
     <div>
@@ -73,6 +94,22 @@ function MealDetails() {
           />
         </>
       )}
+
+      <h3>Recommended Drinks</h3>
+
+      <div className="recommendations-carousel">
+        {recommendedDrinks.map((drink) => (
+          <div
+            key={ drink.idDrink }
+            className="recommendation-card"
+          >
+            <RecipeCard
+              recipe={ drink }
+              type="drink"
+            />
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

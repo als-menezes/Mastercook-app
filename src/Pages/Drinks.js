@@ -4,7 +4,7 @@ import RecipeCard from '../Components/RecipeCard';
 import { fetchDrinks, fetchDrinkCategories } from '../Services/cocktailAPI';
 
 function Drinks() {
-  const { drinks, setDrinks, loading, setLoading } = useContext(RecipesContext);
+  const { drinks, setDrinks, setMeals, loading, setLoading } = useContext(RecipesContext);
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('');
 
@@ -23,14 +23,26 @@ function Drinks() {
       }
     };
 
+    const loadInitialMeals = async () => {
+      if (meals.length === 0) {
+        setLoading(true);
+
+        const data = await fetchMeals();
+        setMeals(data.meals || []);
+
+        setLoading(false);
+      }
+    };
+
     const loadCategories = async () => {
       const data = await fetchDrinkCategories();
       setCategories(data.drinks.slice(0, MAX_CATEGORIES));
     };
 
     loadInitialDrinks();
+    loadInitialMeals();
     loadCategories();
-  }, [drinks.length, setDrinks, setLoading]);
+  }, [drinks.length, setDrinks, setMeals, setLoading]);
 
   const handleCategoryClick = async (categoryName) => {
     setLoading(true);

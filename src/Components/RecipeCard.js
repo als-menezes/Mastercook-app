@@ -1,10 +1,8 @@
 import PropTypes from 'prop-types';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
-function RecipeCard({ recipe }) {
-  const { pathname } = useLocation();
-
-  const isMeal = pathname.includes('/meals');
+function RecipeCard({ recipe, type }) {
+  const isMeal = type === 'meal';
 
   const id = isMeal ? recipe.idMeal : recipe.idDrink;
   const name = isMeal ? recipe.strMeal : recipe.strDrink;
@@ -38,6 +36,7 @@ RecipeCard.propTypes = {
       strDrinkThumb: PropTypes.string,
     }),
   ]).isRequired,
+  type: PropTypes.oneOf(['meal', 'drink']).isRequired,
 };
 
 export default RecipeCard;
