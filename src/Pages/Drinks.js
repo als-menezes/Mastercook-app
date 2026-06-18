@@ -2,9 +2,11 @@ import { useContext, useEffect, useState } from 'react';
 import RecipesContext from '../Context/RecipesContext';
 import RecipeCard from '../Components/RecipeCard';
 import { fetchDrinks, fetchDrinkCategories } from '../Services/cocktailAPI';
+import { fetchMeals } from '../Services/mealAPI';
 
 function Drinks() {
-  const { drinks, setDrinks, setMeals, loading, setLoading } = useContext(RecipesContext);
+  const { drinks,
+    setDrinks, meals, setMeals, loading, setLoading } = useContext(RecipesContext);
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('');
 
@@ -42,7 +44,7 @@ function Drinks() {
     loadInitialDrinks();
     loadInitialMeals();
     loadCategories();
-  }, [drinks.length, setDrinks, setMeals, setLoading]);
+  }, [drinks.length, meals.length, setDrinks, setMeals, setLoading]);
 
   const handleCategoryClick = async (categoryName) => {
     setLoading(true);

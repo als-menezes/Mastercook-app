@@ -1,10 +1,13 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import RecipesContext from '../Context/RecipesContext';
+import RecipeCard from '../Components/RecipeCard';
 
 function DrinkDetails() {
   const { id } = useParams();
   const [recipe, setRecipe] = useState(null);
   const [loading, setLoading] = useState(true);
+  const { meals, setMeals } = useContext(RecipesContext);
 
   useEffect(() => {
     const fetchRecipe = async () => {
@@ -23,8 +26,24 @@ function DrinkDetails() {
     fetchRecipe();
   }, [id]);
 
+  useEffect(() => {
+    const loadRecommendedMeals = async () => {
+      if (meals.length === 0) {
+        const data = await fetchMeals();
+
+        setMeals(data.meals || []);
+      }
+    };
+
+    loadRecommendedMeals();
+  }, [meals.length, setMeals]);
+
   if (loading) return <p>Loading...</p>;
   if (!recipe) return <p>Recipe not found</p>;
+
+  const MAX_RECOMMENDATIONS = 6;
+
+  const recommendedMeals = meals.slice(0, MAX_RECOMMENDATIONS);
 
   return (
     <div>
@@ -52,6 +71,22 @@ function DrinkDetails() {
       </ul>
       <h3>Instructions</h3>
       <p>{recipe.strInstructions}</p>
+
+      <h3>Recommended Meals</h3>
+
+      <div className="recommendations-carousel">
+        {recommendedMeals.map((meal) => (
+          <div
+            key={ meal.idMeal }
+            className="recommendation-card"
+          >
+            <RecipeCard
+              recipe={ meal }
+              type="meal"
+            />
+          </div>
+        ))}
+      </div>
 
     </div>
   );
