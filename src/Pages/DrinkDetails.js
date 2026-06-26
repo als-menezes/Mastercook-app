@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import RecipesContext from '../Context/RecipesContext';
 import RecipeCard from '../Components/RecipeCard';
+import StartRecipeButton from '../Components/StartRecipeBTN';
 
 function DrinkDetails() {
   const { id } = useParams();
@@ -94,7 +95,10 @@ function DrinkDetails() {
           </div>
         ))}
       </div>
-
+      <StartRecipeButton
+        recipeId={ recipe.idDrink }
+        type="drink"
+      />
     </div>
   );
 }

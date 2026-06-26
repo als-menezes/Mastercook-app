@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import RecipesContext from '../Context/RecipesContext';
 import RecipeCard from '../Components/RecipeCard';
 import { fetchDrinks } from '../Services/cocktailAPI';
+import StartRecipeButton from '../Components/StartRecipeBTN';
 
 function MealDetails() {
   const { id } = useParams();
@@ -110,6 +111,10 @@ function MealDetails() {
           </div>
         ))}
       </div>
+      <StartRecipeButton
+        recipeId={ recipe.idMeal }
+        type="meal"
+      />
     </div>
   );
 }
