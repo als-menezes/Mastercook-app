@@ -54,7 +54,14 @@ function DrinkDetails() {
 
       <h1>{recipe.strDrink}</h1>
 
-      <p>{recipe.strCategory}</p>
+      <p>
+
+        {recipe.strCategory}
+        {' '}
+        -
+        {recipe.strAlcoholic}
+
+      </p>
 
       <h3>Ingredients</h3>
       <ul>
