@@ -5,17 +5,26 @@ function StartRecipeButton({ recipeId, type }) {
   const history = useHistory();
 
   const handleStartRecipe = () => {
-    if (type === 'meal') {
-      history.push(`/meals/${recipeId}/in-progress`);
-      return;
-    }
+    history.push(`/${type}s/${recipeId}/in-progress`);
+  };
 
-    history.push(`/drinks/${recipeId}/in-progress`);
+  const buttonStyle = {
+    position: 'fixed',
+    bottom: 0,
+    left: 0,
+    width: '100%',
+    padding: '16px',
+    border: 'none',
+    fontSize: '18px',
+    fontWeight: 'bold',
+    zIndex: 1000,
+    cursor: 'pointer',
   };
 
   return (
     <button
       type="button"
+      style={ buttonStyle }
       onClick={ handleStartRecipe }
     >
       Start Recipe
