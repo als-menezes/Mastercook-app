@@ -4,6 +4,7 @@ import RecipesContext from '../Context/RecipesContext';
 import RecipeCard from '../Components/RecipeCard';
 import { fetchDrinks } from '../Services/cocktailAPI';
 import StartRecipeButton from '../Components/StartRecipeBTN';
+import RecipeActions from '../Components/RecipeActions';
 
 function MealDetails() {
   const { id } = useParams();
@@ -60,6 +61,12 @@ function MealDetails() {
       />
 
       <h1>{recipe.strMeal}</h1>
+      <h1>{recipe.strMeal}</h1>
+
+      <RecipeActions
+        recipeId={ recipe }
+        type="meal"
+      />
 
       <p>{recipe.strCategory}</p>
 

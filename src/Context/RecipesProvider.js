@@ -6,6 +6,7 @@ function RecipesProvider({ children }) {
   const [meals, setMeals] = useState([]);
   const [drinks, setDrinks] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [isFavorite, setIsFavorite] = useState(false);
 
   const value = useMemo(() => ({
     meals,
@@ -14,7 +15,9 @@ function RecipesProvider({ children }) {
     setDrinks,
     loading,
     setLoading,
-  }), [meals, drinks, loading]);
+    isFavorite,
+    setIsFavorite,
+  }), [meals, drinks, loading, isFavorite]);
 
   return (
     <RecipesContext.Provider value={ value }>

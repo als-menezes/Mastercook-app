@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import RecipesContext from '../Context/RecipesContext';
 import RecipeCard from '../Components/RecipeCard';
 import StartRecipeButton from '../Components/StartRecipeBTN';
+import RecipeActions from '../Components/RecipeActions';
 
 function DrinkDetails() {
   const { id } = useParams();
@@ -54,6 +55,10 @@ function DrinkDetails() {
       />
 
       <h1>{recipe.strDrink}</h1>
+      <RecipeActions
+        recipe={ recipe }
+        type="drink"
+      />
 
       <p>
 
